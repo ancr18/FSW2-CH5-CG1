@@ -38,16 +38,18 @@ const createCar = async (req, res, next) => {
       imageUrl: img,
     });
 
-    await AuditCarTrail.create({
+    const data = await AuditCarTrail.create({
       carId: newCar.id,
       action: "Create",
       performedBy: req.user.id,
     });
+    console.log(data);
 
-    res.status(200).json({
+    res.status(201).json({
       status: "Success",
       data: {
-        newCar,
+        ...newCar,
+        ...data,
       },
     });
   } catch (err) {
@@ -58,6 +60,7 @@ const createCar = async (req, res, next) => {
 const findCars = async (req, res, next) => {
   try {
     const cars = await Car.findAll({
+      paranoid: false, //agar semua data yang terhapus dapat ditampilkan
       include: ["AuditCarTrail"],
       order: [["id", "ASC"]],
     });
@@ -79,8 +82,13 @@ const findCarsById = async (req, res, next) => {
       where: {
         id: req.params.id,
       },
+
       include: ["AuditCarTrail"],
     });
+
+    if (!car) {
+      return next(new ApiError("Car not found", 404));
+    }
 
     res.status(200).json({
       status: "Success",
@@ -134,20 +142,21 @@ const updateCar = async (req, res, next) => {
 
 const deleteCar = async (req, res, next) => {
   try {
-    const product = await Car.findOne({
+    const car = await Car.findOne({
       where: {
         id: req.params.id,
       },
     });
 
-    if (!product) {
-      next(new ApiError("Car not found", 404));
+    if (!car) {
+      return next(new ApiError("Car not found", 404));
     }
 
     await Car.destroy({
       where: {
         id: req.params.id,
       },
+      force: false,
     });
 
     await AuditCarTrail.create({
@@ -168,9 +177,9 @@ const deleteCar = async (req, res, next) => {
 const availableCars = async (req, res, next) => {
   try {
     const cars = await Car.findAll({
+      where: { deletedAt: null },
       include: ["AuditCarTrail"],
       order: [["id", "ASC"]],
-      paranoid: false,
     });
 
     res.status(200).json({

@@ -25,13 +25,13 @@ module.exports = (sequelize, DataTypes) => {
           "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
       },
       available: { type: DataTypes.BOOLEAN, defaultValue: true },
-      deleteAt: DataTypes.DATE,
+      deletedAt: DataTypes.DATE,
     },
     {
       sequelize,
       modelName: "Car",
       paranoid: true,
-      deletedAt: "deleteAt",
+      deletedAt: "deletedAt",
     }
   );
   return Car;

@@ -6,9 +6,21 @@ const upload = require("../middlewares/uploader");
 const Autentikasi = require("../middlewares/authenticate");
 const checkRole = require("../middlewares/checkRole");
 
-router.get("/", Car.findCars);
-router.get("/avail", Car.findCars);
-router.get("/:id", Car.findCarsById);
+router.get("/avail", Car.availableCars);
+router.get(
+  "/",
+  Autentikasi,
+  checkRole("SuperAdmin", "Admin"),
+  upload.single("image"),
+  Car.findCars
+);
+router.get(
+  "/:id",
+  Autentikasi,
+  checkRole("SuperAdmin", "Admin"),
+  upload.single("image"),
+  Car.findCarsById
+);
 router.post(
   "/",
   Autentikasi,
