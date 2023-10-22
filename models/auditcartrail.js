@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "carId",
       });
       AuditCarTrail.belongsTo(models.User, {
-        foreignKey: "performBy",
+        foreignKey: "performedBy",
       });
     }
   }
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       carId: DataTypes.INTEGER,
       action: DataTypes.ENUM(["Create", "Update", "Delete"]),
-      performBy: DataTypes.INTEGER,
+      performedBy: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       User.hasMany(models.AuditCarTrail, {
         foreignKey: "performedBy",
+        as: "AuditCarTrail",
       });
     }
   }

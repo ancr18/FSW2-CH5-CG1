@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Car.hasMany(models.AuditCarTrail, {
         foreignKey: "carId",
+        as: "AuditCarTrail",
       });
     }
   }
@@ -30,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Car",
       paranoid: true,
+      deletedAt: "deleteAt",
     }
   );
   return Car;

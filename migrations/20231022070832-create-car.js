@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false,
       },
-      categoty: {
+      category: {
         type: Sequelize.ENUM(["Small", "Medium", "Large"]),
         allowNull: false,
       },
