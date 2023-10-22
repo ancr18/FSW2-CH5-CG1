@@ -8,25 +8,25 @@ const register = async (req, res, next) => {
     const { name, email, password, confirmPassword, role } = req.body;
 
     // validasi untuk check apakah email nya udah ada
-    const user = await Auth.findOne({
+    const existingUser = await Auth.findOne({
       where: {
         email,
       },
     });
 
-    if (user) {
-      next(new ApiError("User email already taken", 400));
+    if (existingUser) {
+      return next(new ApiError("User email already taken", 400));
     }
 
     // minimum password length
     const passwordLength = password <= 8;
     if (passwordLength) {
-      next(new ApiError("Minimum password must be 8 character", 400));
+      return next(new ApiError("Minimum password must be 8 character", 400));
     }
 
     // minimum password length
     if (password !== confirmPassword) {
-      next(new ApiError("password does not match", 400));
+      return next(new ApiError("password does not match", 400));
     }
 
     // hashing password
