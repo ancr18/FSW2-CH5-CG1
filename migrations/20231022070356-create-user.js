@@ -1,7 +1,4 @@
 "use strict";
-
-const { DataTypes } = require("sequelize");
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -14,18 +11,17 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       age: {
         type: Sequelize.INTEGER,
       },
       address: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       role: {
-        type: Sequelize.ENUM(["Owner", "Staff"]),
-      },
-      shopId: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.ENUM(["SuperAdmin", "Admin", "Member"]),
+        defaultValue: "Member",
       },
       createdAt: {
         allowNull: false,

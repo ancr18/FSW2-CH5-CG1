@@ -8,23 +8,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       User.hasOne(models.Auth, {
-        foreignKey: {
-          name: "userId",
-        },
+        foreignKey: "userId",
       });
-
-      User.belongsTo(models.Shop, {
-        foreignKey: {
-          name: "shopId",
-        },
-      });
-
-      User.hasMany(models.Product, {
-        foreignKey: {
-          name: "userId",
-        },
+      User.hasMany(models.AuditCarTrail, {
+        foreignKey: "performedBy",
       });
     }
   }
@@ -32,12 +20,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       age: DataTypes.INTEGER,
+      address: DataTypes.TEXT,
       role: {
-        type: DataTypes.ENUM(["Owner", "Staff"]),
-        defaultValue: "Staff",
+        type: DataTypes.ENUM(["SuperAdmin", "Admin", "Member"]),
+        defaultValue: "Member",
       },
-      address: DataTypes.STRING,
-      shopId: DataTypes.INTEGER,
     },
     {
       sequelize,
