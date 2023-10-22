@@ -36,7 +36,6 @@ const register = async (req, res, next) => {
 
     const newUser = await User.create({
       name,
-      role,
     });
     const test = await Auth.create({
       email,
