@@ -97,7 +97,7 @@ const login = async (req, res, next) => {
   }
 };
 
-const authenticate = async (req, res) => {
+const checkToken = async (req, res) => {
   try {
     res.status(200).json({
       status: "Success",
@@ -113,5 +113,5 @@ const authenticate = async (req, res) => {
 module.exports = {
   register,
   login,
-  authenticate,
+  checkToken,
 };
