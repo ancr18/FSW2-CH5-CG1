@@ -177,7 +177,10 @@ const deleteCar = async (req, res, next) => {
 const availableCars = async (req, res, next) => {
   try {
     const cars = await Car.findAll({
-      where: { deletedAt: null },
+      where: {
+        deletedAt: null,
+        available: true,
+      },
       include: ["AuditCarTrail"],
       order: [["id", "ASC"]],
     });

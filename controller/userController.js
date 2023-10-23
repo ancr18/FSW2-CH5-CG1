@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 
 const createAdmin = async (req, res, next) => {
   try {
-    const { name, email, password, confirmPassword, role } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
 
     // validasi untuk check apakah email nya udah ada
     const existingUser = await Auth.findOne({
@@ -36,9 +36,10 @@ const createAdmin = async (req, res, next) => {
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
     const hashedConfirmPassword = bcrypt.hashSync(confirmPassword, saltRounds);
 
+    console.log("cek");
     const newUser = await User.create({
       name,
-      role,
+      role: "Admin",
     });
     const test = await Auth.create({
       email,
@@ -109,7 +110,7 @@ const findUserById = async (req, res, next) => {
 };
 
 const updateUser = async (req, res, next) => {
-  const { name, age, email, address } = req.body;
+  const { name, age, email, address, password, confirmPassword } = req.body;
   try {
     const existingUser = await Auth.findOne({
       where: {
@@ -121,12 +122,26 @@ const updateUser = async (req, res, next) => {
       return next(new ApiError("User email already taken", 400));
     }
 
-    await User.update(
+    const passwordLength = password <= 8;
+    if (passwordLength) {
+      return next(new ApiError("Minimum password must be 8 character", 400));
+    }
+
+    // minimum password length
+    if (password !== confirmPassword) {
+      return next(new ApiError("Password does not match", 400));
+    }
+
+    // hashing password
+    const saltRounds = 10;
+    const hashedPassword = bcrypt.hashSync(password, saltRounds);
+    const hashedConfirmPassword = bcrypt.hashSync(confirmPassword, saltRounds);
+
+    const updateUser = await User.update(
       {
         name,
         age,
         address,
-        email,
       },
       {
         where: {
@@ -134,6 +149,12 @@ const updateUser = async (req, res, next) => {
         },
       }
     );
+    await Auth.create({
+      email,
+      password: hashedPassword,
+      confirmPassword: hashedConfirmPassword,
+      userId: updateUser.id,
+    });
 
     res.status(200).json({
       status: "Success",

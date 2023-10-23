@@ -103,7 +103,7 @@
         }
       }
     },
-    "/auth/registes": {
+    "/auth/register": {
       "post": {
         "tags": ["Auth"],
         "summary": "Return hasil hit API register member",
@@ -331,7 +331,7 @@
         }
       }
     },
-    "/users/": {
+    "/users": {
       "get": {
         "tags": ["User"],
         "security": [
@@ -536,6 +536,1717 @@
                               "createdAt": "2023-10-23T03:53:40.057Z",
                               "updatedAt": "2023-10-23T03:53:40.057Z"
                             }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Jika tidak user tidak memiliki akses (Member)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Your are not SuperAdmin/Admin. You cant access"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": ["User"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API find User by Id",
+        "description": "Menampilkan data user berdasarkan ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses mendapatkan data user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "user": {
+                          "id": 7,
+                          "name": "Superadmin1",
+                          "age": 20,
+                          "address": "Palu",
+                          "role": "SuperAdmin",
+                          "createdAt": "2023-10-22T07:39:20.678Z",
+                          "updatedAt": "2023-10-22T07:39:20.678Z",
+                          "Auth": {
+                            "id": 4,
+                            "email": "superadmin1@gmail.com",
+                            "password": "$2a$10$xpMKCgcPVkMmBSajFkV.SOwP6DDaelMBRuzUZVTTYHQvyh9wKQIo6",
+                            "confirmPassword": "$2a$10$xpMKCgcPVkMmBSajFkV.SOwP6DDaelMBRuzUZVTTYHQvyh9wKQIo6",
+                            "userId": 7,
+                            "createdAt": "2023-10-22T07:39:21.076Z",
+                            "updatedAt": "2023-10-22T07:39:21.076Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/create-admin": {
+      "post": {
+        "tags": ["User"],
+        "security": [
+          {
+            "bearerToken": [],
+            "roles": ["Admin", "SuperAdmin"]
+          }
+        ],
+        "summary": "Return hasil hit API Create Admin",
+        "description": "API untuk membuat akun admin, yang dapat diakses oleh role (SuperAdmin)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "adminganteng@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "admin123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "admin123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sukses membuat akun admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "dataValues": {
+                          "id": 21,
+                          "name": "Ansca",
+                          "role": "Admin",
+                          "updatedAt": "2023-10-23T12:38:08.677Z",
+                          "createdAt": "2023-10-23T12:38:08.677Z",
+                          "age": null,
+                          "address": null
+                        },
+                        "_previousDataValues": {
+                          "name": "Ansca",
+                          "role": "Admin",
+                          "id": 21,
+                          "age": null,
+                          "address": null,
+                          "createdAt": "2023-10-23T12:38:08.677Z",
+                          "updatedAt": "2023-10-23T12:38:08.677Z"
+                        },
+                        "uniqno": 1,
+                        "_changed": {},
+                        "_options": {
+                          "isNewRecord": true,
+                          "_schema": null,
+                          "_schemaDelimiter": ""
+                        },
+                        "isNewRecord": false,
+                        "email": "admin122@gmail.com",
+                        "password": "$2b$10$R.EK5aV4npod9wGXq0fbduGz83nc5/oLi3yjqw9lD37EPaiMlPoNW",
+                        "confirmPassword": "$2b$10$ld0iXk3nwEiYaPbZFy0OxOJ08.lVTb8ezfVd/vSAeCUjyU9.u9K0C"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Jika user tidak memiliki akses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Your are not SuperAdmin. You cant access"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/edit": {
+      "patch": {
+        "tags": ["User"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API edit user",
+        "description": "API untuk mengedit user",
+        "requestBody": {
+          "description": "Request body untuk sukses register member",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Babang Tamvan"
+                  },
+                  "age": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Kota Palu"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "abg@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sukses mengedit user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully updated user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id nya tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User id not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/delete": {
+      "delete": {
+        "tags": ["User"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API Delete User",
+        "description": "API untuk delete user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Sukses menghapus user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully deleted user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id nya tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User id not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars": {
+      "get": {
+        "tags": ["Car"],
+        "security": [
+          {
+            "bearerToken": [],
+            "roles": ["Admin", "SuperAdmin"]
+          }
+        ],
+        "summary": "Return hasil hit API find Car All",
+        "description": "API untuk melihat semua car yang pernah dibuat, baik yang telah dihapus",
+        "responses": {
+          "200": {
+            "description": "Sukses mengambil data car",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "cars": [
+                          {
+                            "id": 1,
+                            "name": "baru1",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": "2023-10-22T14:30:50.906Z",
+                            "createdAt": "2023-10-22T14:30:31.283Z",
+                            "updatedAt": "2023-10-22T14:30:31.283Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 13,
+                                "carId": 1,
+                                "action": "Delete",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:30:50.937Z",
+                                "updatedAt": "2023-10-22T14:30:50.937Z"
+                              },
+                              {
+                                "id": 12,
+                                "carId": 1,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:30:31.329Z",
+                                "updatedAt": "2023-10-22T14:30:31.329Z"
+                              },
+                              {
+                                "id": 11,
+                                "carId": 1,
+                                "action": "Delete",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:04:45.062Z",
+                                "updatedAt": "2023-10-22T14:04:45.062Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 2,
+                            "name": "baru1",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": "2023-10-22T14:39:10.694Z",
+                            "createdAt": "2023-10-22T14:37:09.033Z",
+                            "updatedAt": "2023-10-22T14:37:09.033Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 8,
+                                "carId": 2,
+                                "action": "Delete",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T13:27:17.625Z",
+                                "updatedAt": "2023-10-22T13:27:17.625Z"
+                              },
+                              {
+                                "id": 16,
+                                "carId": 2,
+                                "action": "Delete",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:39:10.719Z",
+                                "updatedAt": "2023-10-22T14:39:10.719Z"
+                              },
+                              {
+                                "id": 14,
+                                "carId": 2,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:37:09.077Z",
+                                "updatedAt": "2023-10-22T14:37:09.077Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 3,
+                            "name": "baru12",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T14:38:03.741Z",
+                            "updatedAt": "2023-10-22T14:38:03.741Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 1,
+                                "carId": 3,
+                                "action": "Create",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T11:56:32.656Z",
+                                "updatedAt": "2023-10-22T11:56:32.656Z"
+                              },
+                              {
+                                "id": 15,
+                                "carId": 3,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:38:03.766Z",
+                                "updatedAt": "2023-10-22T14:38:03.766Z"
+                              },
+                              {
+                                "id": 17,
+                                "carId": 3,
+                                "action": "Update",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T14:41:02.226Z",
+                                "updatedAt": "2023-10-22T14:41:02.226Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 4,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T14:41:31.254Z",
+                            "updatedAt": "2023-10-22T14:41:31.254Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 5,
+                                "carId": 4,
+                                "action": "Update",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T13:11:34.225Z",
+                                "updatedAt": "2023-10-22T13:11:34.225Z"
+                              },
+                              {
+                                "id": 2,
+                                "carId": 4,
+                                "action": "Create",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T12:05:58.544Z",
+                                "updatedAt": "2023-10-22T12:05:58.544Z"
+                              },
+                              {
+                                "id": 7,
+                                "carId": 4,
+                                "action": "Update",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T13:14:24.948Z",
+                                "updatedAt": "2023-10-22T13:14:24.948Z"
+                              },
+                              {
+                                "id": 18,
+                                "carId": 4,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:41:31.267Z",
+                                "updatedAt": "2023-10-22T14:41:31.267Z"
+                              },
+                              {
+                                "id": 6,
+                                "carId": 4,
+                                "action": "Update",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T13:13:10.153Z",
+                                "updatedAt": "2023-10-22T13:13:10.153Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 5,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T14:51:10.604Z",
+                            "updatedAt": "2023-10-22T14:51:10.604Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 19,
+                                "carId": 5,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:51:10.678Z",
+                                "updatedAt": "2023-10-22T14:51:10.678Z"
+                              },
+                              {
+                                "id": 3,
+                                "carId": 5,
+                                "action": "Create",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T12:06:55.430Z",
+                                "updatedAt": "2023-10-22T12:06:55.430Z"
+                              },
+                              {
+                                "id": 9,
+                                "carId": 5,
+                                "action": "Delete",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T13:27:28.617Z",
+                                "updatedAt": "2023-10-22T13:27:28.617Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 6,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T14:51:13.506Z",
+                            "updatedAt": "2023-10-22T14:51:13.506Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 4,
+                                "carId": 6,
+                                "action": "Create",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T12:17:28.495Z",
+                                "updatedAt": "2023-10-22T12:17:28.495Z"
+                              },
+                              {
+                                "id": 20,
+                                "carId": 6,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:51:13.516Z",
+                                "updatedAt": "2023-10-22T14:51:13.516Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 7,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T14:57:51.825Z",
+                            "updatedAt": "2023-10-22T14:57:51.825Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 10,
+                                "carId": 7,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T13:57:37.516Z",
+                                "updatedAt": "2023-10-22T13:57:37.516Z"
+                              },
+                              {
+                                "id": 21,
+                                "carId": 7,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:57:51.880Z",
+                                "updatedAt": "2023-10-22T14:57:51.880Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 8,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T15:02:29.956Z",
+                            "updatedAt": "2023-10-22T15:02:29.956Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 22,
+                                "carId": 8,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T15:02:30.004Z",
+                                "updatedAt": "2023-10-22T15:02:30.004Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 9,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T15:03:06.035Z",
+                            "updatedAt": "2023-10-22T15:03:06.035Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 23,
+                                "carId": 9,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T15:03:06.073Z",
+                                "updatedAt": "2023-10-22T15:03:06.073Z"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Jika tidak user tidak memiliki akses (Member)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Your are not SuperAdmin/Admin. You cant access"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/": {
+      "get": {
+        "tags": ["Car"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API find Car by Id",
+        "description": "Menampilkan data car berdasarkan ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Car ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses mendapatkan data car",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "car": {
+                          "id": 3,
+                          "name": "baru12",
+                          "price": 10000,
+                          "category": "Small",
+                          "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                          "available": true,
+                          "deletedAt": null,
+                          "createdAt": "2023-10-22T14:38:03.741Z",
+                          "updatedAt": "2023-10-22T14:38:03.741Z",
+                          "AuditCarTrail": [
+                            {
+                              "id": 1,
+                              "carId": 3,
+                              "action": "Create",
+                              "performedBy": 18,
+                              "createdAt": "2023-10-22T11:56:32.656Z",
+                              "updatedAt": "2023-10-22T11:56:32.656Z"
+                            },
+                            {
+                              "id": 15,
+                              "carId": 3,
+                              "action": "Create",
+                              "performedBy": 7,
+                              "createdAt": "2023-10-22T14:38:03.766Z",
+                              "updatedAt": "2023-10-22T14:38:03.766Z"
+                            },
+                            {
+                              "id": 17,
+                              "carId": 3,
+                              "action": "Update",
+                              "performedBy": 18,
+                              "createdAt": "2023-10-22T14:41:02.226Z",
+                              "updatedAt": "2023-10-22T14:41:02.226Z"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/create": {
+      "post": {
+        "tags": ["Car"],
+        "security": [
+          {
+            "bearerToken": [],
+            "roles": ["Admin", "SuperAdmin"]
+          }
+        ],
+        "summary": "Return hasil hit API Create Car",
+        "description": "API untuk membuat car baru yang dapat dilakukan oleh role (SuperAdmin) dan (Admin)",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Toota"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": 101010
+                  },
+                  "available": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "Small"
+                  },
+                  "imageUrl": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sukses membuat akun admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "dataValues": {
+                          "id": 21,
+                          "name": "Ansca",
+                          "role": "Admin",
+                          "updatedAt": "2023-10-23T12:38:08.677Z",
+                          "createdAt": "2023-10-23T12:38:08.677Z",
+                          "age": null,
+                          "address": null
+                        },
+                        "_previousDataValues": {
+                          "name": "Ansca",
+                          "role": "Admin",
+                          "id": 21,
+                          "age": null,
+                          "address": null,
+                          "createdAt": "2023-10-23T12:38:08.677Z",
+                          "updatedAt": "2023-10-23T12:38:08.677Z"
+                        },
+                        "uniqno": 1,
+                        "_changed": {},
+                        "_options": {
+                          "isNewRecord": true,
+                          "_schema": null,
+                          "_schemaDelimiter": ""
+                        },
+                        "isNewRecord": false,
+                        "email": "admin122@gmail.com",
+                        "password": "$2b$10$R.EK5aV4npod9wGXq0fbduGz83nc5/oLi3yjqw9lD37EPaiMlPoNW",
+                        "confirmPassword": "$2b$10$ld0iXk3nwEiYaPbZFy0OxOJ08.lVTb8ezfVd/vSAeCUjyU9.u9K0C"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Jika user tidak memiliki akses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Your are not SuperAdmin. You cant access"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/edit": {
+      "patch": {
+        "tags": ["Car"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API edit user",
+        "description": "API untuk mengedit user",
+        "requestBody": {
+          "description": "Request body untuk sukses register member",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Babang Tamvan"
+                  },
+                  "age": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Kota Palu"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "abg@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sukses mengedit user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully updated user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id nya tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User id not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/delete": {
+      "delete": {
+        "tags": ["Car"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API Delete Car",
+        "description": "API untuk delete car",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Car ID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Sukses menghapus car",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully deleted car"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id nya tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User id not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/avail": {
+      "get": {
+        "tags": ["Car"],
+        "summary": "Return hasil hit API find car yang tersedia",
+        "description": "API untuk melihat semua car yang tersedia",
+        "responses": {
+          "200": {
+            "description": "Sukses mengambil data car",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "cars": [
+                          {
+                            "id": 3,
+                            "name": "baru12",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T14:38:03.741Z",
+                            "updatedAt": "2023-10-22T14:38:03.741Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 1,
+                                "carId": 3,
+                                "action": "Create",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T11:56:32.656Z",
+                                "updatedAt": "2023-10-22T11:56:32.656Z"
+                              },
+                              {
+                                "id": 15,
+                                "carId": 3,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:38:03.766Z",
+                                "updatedAt": "2023-10-22T14:38:03.766Z"
+                              },
+                              {
+                                "id": 17,
+                                "carId": 3,
+                                "action": "Update",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T14:41:02.226Z",
+                                "updatedAt": "2023-10-22T14:41:02.226Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 4,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T14:41:31.254Z",
+                            "updatedAt": "2023-10-22T14:41:31.254Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 18,
+                                "carId": 4,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:41:31.267Z",
+                                "updatedAt": "2023-10-22T14:41:31.267Z"
+                              },
+                              {
+                                "id": 5,
+                                "carId": 4,
+                                "action": "Update",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T13:11:34.225Z",
+                                "updatedAt": "2023-10-22T13:11:34.225Z"
+                              },
+                              {
+                                "id": 6,
+                                "carId": 4,
+                                "action": "Update",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T13:13:10.153Z",
+                                "updatedAt": "2023-10-22T13:13:10.153Z"
+                              },
+                              {
+                                "id": 7,
+                                "carId": 4,
+                                "action": "Update",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T13:14:24.948Z",
+                                "updatedAt": "2023-10-22T13:14:24.948Z"
+                              },
+                              {
+                                "id": 2,
+                                "carId": 4,
+                                "action": "Create",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T12:05:58.544Z",
+                                "updatedAt": "2023-10-22T12:05:58.544Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 5,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T14:51:10.604Z",
+                            "updatedAt": "2023-10-22T14:51:10.604Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 19,
+                                "carId": 5,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:51:10.678Z",
+                                "updatedAt": "2023-10-22T14:51:10.678Z"
+                              },
+                              {
+                                "id": 3,
+                                "carId": 5,
+                                "action": "Create",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T12:06:55.430Z",
+                                "updatedAt": "2023-10-22T12:06:55.430Z"
+                              },
+                              {
+                                "id": 9,
+                                "carId": 5,
+                                "action": "Delete",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T13:27:28.617Z",
+                                "updatedAt": "2023-10-22T13:27:28.617Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 6,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T14:51:13.506Z",
+                            "updatedAt": "2023-10-22T14:51:13.506Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 4,
+                                "carId": 6,
+                                "action": "Create",
+                                "performedBy": 18,
+                                "createdAt": "2023-10-22T12:17:28.495Z",
+                                "updatedAt": "2023-10-22T12:17:28.495Z"
+                              },
+                              {
+                                "id": 20,
+                                "carId": 6,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:51:13.516Z",
+                                "updatedAt": "2023-10-22T14:51:13.516Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 7,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T14:57:51.825Z",
+                            "updatedAt": "2023-10-22T14:57:51.825Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 10,
+                                "carId": 7,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T13:57:37.516Z",
+                                "updatedAt": "2023-10-22T13:57:37.516Z"
+                              },
+                              {
+                                "id": 21,
+                                "carId": 7,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T14:57:51.880Z",
+                                "updatedAt": "2023-10-22T14:57:51.880Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 8,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T15:02:29.956Z",
+                            "updatedAt": "2023-10-22T15:02:29.956Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 22,
+                                "carId": 8,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T15:02:30.004Z",
+                                "updatedAt": "2023-10-22T15:02:30.004Z"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 9,
+                            "name": "baru124",
+                            "price": 10000,
+                            "category": "Small",
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "available": true,
+                            "deletedAt": null,
+                            "createdAt": "2023-10-22T15:03:06.035Z",
+                            "updatedAt": "2023-10-22T15:03:06.035Z",
+                            "AuditCarTrail": [
+                              {
+                                "id": 23,
+                                "carId": 9,
+                                "action": "Create",
+                                "performedBy": 7,
+                                "createdAt": "2023-10-22T15:03:06.073Z",
+                                "updatedAt": "2023-10-22T15:03:06.073Z"
+                              }
+                            ]
                           }
                         ]
                       }
