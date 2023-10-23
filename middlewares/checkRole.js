@@ -4,7 +4,7 @@ const checkRole = (role) => {
   return async (req, res, next) => {
     try {
       if (!role.includes(req.user.role)) {
-        return next(new ApiError(`You are not ${role}. You cant access`, 401));
+        return next(new ApiError(`You are not ${role}. You cant access`, 403));
       }
       next();
     } catch (err) {

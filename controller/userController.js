@@ -85,7 +85,7 @@ const findUsers = async (req, res, next) => {
       },
     });
   } catch (err) {
-    next(new ApiError(err.message, 400));
+    next(new ApiError(err.message, 500));
   }
 };
 

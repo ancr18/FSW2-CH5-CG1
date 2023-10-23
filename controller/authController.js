@@ -5,7 +5,7 @@ const ApiError = require("../utils/apiError");
 
 const register = async (req, res, next) => {
   try {
-    const { name, email, password, confirmPassword, role } = req.body;
+    const { name, age, address, email, password, confirmPassword } = req.body;
 
     // validasi untuk check apakah email nya udah ada
     const existingUser = await Auth.findOne({
@@ -14,19 +14,33 @@ const register = async (req, res, next) => {
       },
     });
 
+    if (!name || !age || !address || !email || !password || !confirmPassword) {
+      const required = [];
+      if (!name) required.push("name");
+      if (!age) required.push("age");
+      if (!address) required.push("address");
+      if (!email) required.push("email");
+      if (!password) required.push("password");
+      if (!confirmPassword) required.push("confirmPassword");
+
+      return next(
+        new ApiError(`Fields must be required : ${required.join(", ")}`, 400)
+      );
+    }
+
     if (existingUser) {
-      return next(new ApiError("User email already taken", 400));
+      return next(new ApiError("User email already taken", 409));
     }
 
     // minimum password length
     const passwordLength = password <= 8;
     if (passwordLength) {
-      return next(new ApiError("Minimum password must be 8 character", 400));
+      return next(new ApiError("Minimum password must be 8 character", 422));
     }
 
     // minimum password length
     if (password !== confirmPassword) {
-      return next(new ApiError("password does not match", 400));
+      return next(new ApiError("Password does not match", 400));
     }
 
     // hashing password
@@ -36,6 +50,8 @@ const register = async (req, res, next) => {
 
     const newUser = await User.create({
       name,
+      age,
+      address,
     });
     const test = await Auth.create({
       email,
@@ -80,16 +96,17 @@ const login = async (req, res, next) => {
           role: user.User.role,
           email: user.email,
         },
-        process.env.JWT_SECRET
+        process.env.JWT_SECRET,
+        { expiresIn: "15m" }
       );
 
       res.status(200).json({
         status: "Success",
-        message: "Berhasil login",
+        message: "Successfully login",
         data: token,
       });
     } else {
-      next(new ApiError("wrong password atau user gak ada", 400));
+      next(new ApiError("Wrong email or password", 400));
     }
   } catch (err) {
     next(new ApiError(err.message, 500));

@@ -21,12 +21,600 @@
   ],
   "servers": [
     {
-      "url": "http://localhost:8000/v1/api"
+      "url": "http://localhost:8000/api/v1"
     }
   ],
   "paths": {
-    "/auth/register": {
-      "post": {}
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Return hasil hit API login User",
+        "description": "API untuk login User. Token hanya bertahan selama 15 menit",
+        "requestBody": {
+          "description": "Request body untuk sukses login user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "superadmin1@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "superadmin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses Login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully login"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcm5hbWUiOiJTdXBlcmFkbWluMSIsInJvbGUiOiJTdXBlckFkbWluIiwiZW1haWwiOiJzdXBlcmFkbWluMUBnbWFpbC5jb20iLCJpYXQiOjE2OTgwMjk4Njd9.fmhNG8mWU8a_BxfIipfIOnKvla1Mdt81Hi_Rwwnyfo4"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Gagal Login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Wrong email or password"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/registes": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Return hasil hit API register member",
+        "description": "API untuk register member",
+        "requestBody": {
+          "description": "Request body untuk sukses register member",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Babang Tamvan"
+                  },
+                  "age": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Kota Palu"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "abg@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "abang"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "abang"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success Register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "dataValues": {
+                          "role": "Member",
+                          "id": 20,
+                          "name": "Ansca",
+                          "age": 20,
+                          "address": "Palu",
+                          "updatedAt": "2023-10-23T03:53:40.022Z",
+                          "createdAt": "2023-10-23T03:53:40.022Z"
+                        },
+                        "_previousDataValues": {
+                          "name": "Ansca",
+                          "age": 20,
+                          "address": "Palu",
+                          "id": 20,
+                          "role": "Member",
+                          "createdAt": "2023-10-23T03:53:40.022Z",
+                          "updatedAt": "2023-10-23T03:53:40.022Z"
+                        },
+                        "uniqno": 1,
+                        "_changed": {},
+                        "_options": {
+                          "isNewRecord": true,
+                          "_schema": null,
+                          "_schemaDelimiter": ""
+                        },
+                        "isNewRecord": false,
+                        "email": "abang1@gmail.com",
+                        "password": "$2b$10$4vjLb80Td8LMudOjP/Br5uJyekWvZ/lysgtnjUZ4u6Wi7cw8ZBV0i",
+                        "confirmPassword": "$2b$10$eEDCcDyilhNFNIAWyWmzfu87bf/Dcu26LpOCqZStujKkJwjEMrkaW"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Field tidak terisi atau password tidak sama",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Fields must be required : age | password does not match"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Password minimal 8 karakter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Minimum password must be 8 character"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil API checktoken user",
+        "description": "API untuk checktoken user",
+        "responses": {
+          "200": {
+            "description": "Sukses checktoken",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "user": {
+                          "id": 7,
+                          "name": "Superadmin1",
+                          "age": 20,
+                          "address": "Palu",
+                          "role": "SuperAdmin",
+                          "createdAt": "2023-10-22T07:39:20.678Z",
+                          "updatedAt": "2023-10-22T07:39:20.678Z",
+                          "Auth": {
+                            "id": 4,
+                            "email": "superadmin1@gmail.com",
+                            "password": "$2a$10$xpMKCgcPVkMmBSajFkV.SOwP6DDaelMBRuzUZVTTYHQvyh9wKQIo6",
+                            "confirmPassword": "$2a$10$xpMKCgcPVkMmBSajFkV.SOwP6DDaelMBRuzUZVTTYHQvyh9wKQIo6",
+                            "userId": 7,
+                            "createdAt": "2023-10-22T07:39:21.076Z",
+                            "updatedAt": "2023-10-22T07:39:21.076Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": ["User"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API find User All",
+        "description": "API untuk melihat semua user berdasarkan role. Role (SuperAdmin) dapat melihat kesuluruhan data user kecuali data user role SuperAdmin, role (Admin) hanya dapat melihat data Member, role  (Member) tidak dapat melihat data user",
+        "responses": {
+          "200": {
+            "description": "Sukses mengambil data user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "users": [
+                          {
+                            "id": 11,
+                            "name": "Ansca",
+                            "age": null,
+                            "address": null,
+                            "role": "Admin",
+                            "createdAt": "2023-10-22T07:57:00.900Z",
+                            "updatedAt": "2023-10-22T07:57:00.900Z",
+                            "Auth": {
+                              "id": 8,
+                              "email": "aasasa@gmail.com",
+                              "password": "$2b$10$5UVfcdhBCEOQvmPrXvuK4uTQ4U3pPVTtXVRSJeEXXR7etdZFvv582",
+                              "confirmPassword": "$2b$10$nqKP9eDwNEQ4cbJ6fFB5LuxyszOB38k011c8.S7IpsiFuvh9jnP4q",
+                              "userId": 11,
+                              "createdAt": "2023-10-22T07:57:00.939Z",
+                              "updatedAt": "2023-10-22T07:57:00.939Z"
+                            }
+                          },
+                          {
+                            "id": 12,
+                            "name": "admin",
+                            "age": null,
+                            "address": null,
+                            "role": "Admin",
+                            "createdAt": "2023-10-22T07:57:33.486Z",
+                            "updatedAt": "2023-10-22T07:57:33.486Z",
+                            "Auth": {
+                              "id": 9,
+                              "email": "admin1@gmail.com",
+                              "password": "$2b$10$r14KSYQ0l.OqfsUurFpXD.yzNmgNQAcA1lcAFtr8m5iHiwr2xAJ0e",
+                              "confirmPassword": "$2b$10$./S72Z5Ddontn5EL313qX.fL28GuxEWx8Dia5eaZuKIBTjDjZYFTy",
+                              "userId": 12,
+                              "createdAt": "2023-10-22T07:57:33.500Z",
+                              "updatedAt": "2023-10-22T07:57:33.500Z"
+                            }
+                          },
+                          {
+                            "id": 13,
+                            "name": "Ansca",
+                            "age": null,
+                            "address": null,
+                            "role": "Admin",
+                            "createdAt": "2023-10-22T08:09:40.739Z",
+                            "updatedAt": "2023-10-22T08:09:40.739Z",
+                            "Auth": {
+                              "id": 10,
+                              "email": "aasasa@gmail.com",
+                              "password": "$2b$10$h73Phmtcsc7/s16izSjeJuOND4kJDLRhno18rMda0V8z.pwz1x9am",
+                              "confirmPassword": "$2b$10$AIAOZ9o5ngn05R5xq0170Osmjql0VydfIz3aCax7GXsBS8LkNi3ym",
+                              "userId": 13,
+                              "createdAt": "2023-10-22T08:09:40.822Z",
+                              "updatedAt": "2023-10-22T08:09:40.822Z"
+                            }
+                          },
+                          {
+                            "id": 14,
+                            "name": "Ansca",
+                            "age": null,
+                            "address": null,
+                            "role": "Admin",
+                            "createdAt": "2023-10-22T08:09:54.819Z",
+                            "updatedAt": "2023-10-22T08:09:54.819Z",
+                            "Auth": {
+                              "id": 11,
+                              "email": "admin@gmail.com",
+                              "password": "$2b$10$cIo0TQGBEemHvCbaormtMOJuojH5fKmxra6tOlRG01vi1ibxsRsGS",
+                              "confirmPassword": "$2b$10$ngFmm5ZxWJEldmClot/35e35wQgIM1.2bE8unYchmsdmAaOumS8ta",
+                              "userId": 14,
+                              "createdAt": "2023-10-22T08:09:54.836Z",
+                              "updatedAt": "2023-10-22T08:09:54.836Z"
+                            }
+                          },
+                          {
+                            "id": 15,
+                            "name": "Ansca",
+                            "age": null,
+                            "address": null,
+                            "role": "Admin",
+                            "createdAt": "2023-10-22T08:11:56.186Z",
+                            "updatedAt": "2023-10-22T08:11:56.186Z",
+                            "Auth": {
+                              "id": 12,
+                              "email": "a@gmail.com",
+                              "password": "$2b$10$HKQ1q4nqZoL92/Khx0gAfOY7dFLJ9eAyaF6VvC4yRVtqUX8rTyzui",
+                              "confirmPassword": "$2b$10$E57CEbqt1NzwY/V8z.JOmeAEsCPerofRmtsvePYXNT0ZQtpWIr5g2",
+                              "userId": 15,
+                              "createdAt": "2023-10-22T08:11:56.236Z",
+                              "updatedAt": "2023-10-22T08:11:56.236Z"
+                            }
+                          },
+                          {
+                            "id": 16,
+                            "name": "Ansca",
+                            "age": null,
+                            "address": null,
+                            "role": "Admin",
+                            "createdAt": "2023-10-22T08:39:03.139Z",
+                            "updatedAt": "2023-10-22T08:39:03.139Z",
+                            "Auth": {
+                              "id": 13,
+                              "email": "admin12@gmail.com",
+                              "password": "$2b$10$YsjN27Dzw8I8sn4iAp9bIer9W6d9.wF0eT6cAORIatau9j9V06dNS",
+                              "confirmPassword": "$2b$10$PJsCL3I5ALjlpIRdLeLkIOWEdnUuQzbR09Egy/GjPcpjl1h.NK9ku",
+                              "userId": 16,
+                              "createdAt": "2023-10-22T08:39:03.183Z",
+                              "updatedAt": "2023-10-22T08:39:03.183Z"
+                            }
+                          },
+                          {
+                            "id": 17,
+                            "name": "Ansca",
+                            "age": null,
+                            "address": null,
+                            "role": "Admin",
+                            "createdAt": "2023-10-22T09:26:42.818Z",
+                            "updatedAt": "2023-10-22T09:26:42.818Z",
+                            "Auth": {
+                              "id": 14,
+                              "email": "adad@gmail.com",
+                              "password": "$2b$10$jYz/CI3iDsKhMqFt0lkYrueJBWRsI1J/EuWxjw9BnkXTSleGyH1jG",
+                              "confirmPassword": "$2b$10$qkmyrxOToXcE/nBUb2Cgi.EtBUxWO0f.eS0BPANJBw1YD8f9cxkAi",
+                              "userId": 17,
+                              "createdAt": "2023-10-22T09:26:43.147Z",
+                              "updatedAt": "2023-10-22T09:26:43.147Z"
+                            }
+                          },
+                          {
+                            "id": 18,
+                            "name": "Ansca",
+                            "age": null,
+                            "address": null,
+                            "role": "Admin",
+                            "createdAt": "2023-10-22T10:32:08.709Z",
+                            "updatedAt": "2023-10-22T10:32:08.709Z",
+                            "Auth": {
+                              "id": 15,
+                              "email": "admin2@gmail.com",
+                              "password": "$2b$10$Dwgn7Wi.N.6P7HOP6pUCnu0gXmwQ/DOoZW4nucd.1pC0WhHpph9gy",
+                              "confirmPassword": "$2b$10$mTEd25.S02i1Ou9ZRDC6d.dc/gga.vE1jreyzAwUw30msrW/i3s.G",
+                              "userId": 18,
+                              "createdAt": "2023-10-22T10:32:08.744Z",
+                              "updatedAt": "2023-10-22T10:32:08.744Z"
+                            }
+                          },
+                          {
+                            "id": 19,
+                            "name": "Ansca",
+                            "age": null,
+                            "address": null,
+                            "role": "Member",
+                            "createdAt": "2023-10-23T03:50:33.507Z",
+                            "updatedAt": "2023-10-23T03:50:33.507Z",
+                            "Auth": {
+                              "id": 16,
+                              "email": "abang@gmail.com",
+                              "password": "$2b$10$aqrLQ4y48V7KX.e8JM.viu.RzFLAOs8s0XVHMllx/B18TyOusmy2u",
+                              "confirmPassword": "$2b$10$QRn46cYbyAOr1rj.qakBE.VroKigrZn6Oq9YpMitAnbgzt7Wk6ON6",
+                              "userId": 19,
+                              "createdAt": "2023-10-23T03:50:33.578Z",
+                              "updatedAt": "2023-10-23T03:50:33.578Z"
+                            }
+                          },
+                          {
+                            "id": 20,
+                            "name": "Ansca",
+                            "age": 20,
+                            "address": "Palu",
+                            "role": "Member",
+                            "createdAt": "2023-10-23T03:53:40.022Z",
+                            "updatedAt": "2023-10-23T03:53:40.022Z",
+                            "Auth": {
+                              "id": 17,
+                              "email": "abang1@gmail.com",
+                              "password": "$2b$10$4vjLb80Td8LMudOjP/Br5uJyekWvZ/lysgtnjUZ4u6Wi7cw8ZBV0i",
+                              "confirmPassword": "$2b$10$eEDCcDyilhNFNIAWyWmzfu87bf/Dcu26LpOCqZStujKkJwjEMrkaW",
+                              "userId": 20,
+                              "createdAt": "2023-10-23T03:53:40.057Z",
+                              "updatedAt": "2023-10-23T03:53:40.057Z"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika token nya tidak valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Jika tidak user tidak memiliki akses (Member)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Your are not SuperAdmin/Admin. You cant access"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer"
+      }
     }
   }
 }
