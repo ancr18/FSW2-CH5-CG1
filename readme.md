@@ -153,4 +153,4 @@ password: superadmin
 
 Database menggunakan PostgreSQL
 
-![[Database]](public\img\db-diagram.png)
+![[Database]](public/img/db-diagram.png)
