@@ -19,9 +19,9 @@ npm install
 3. Membuat file .env berdasarkan .env.example
 
 ```bash
-DB_USERNAME=
-DB_PASSWORD=
-DB_NAME=
+DB_USERNAME= name_user_db
+DB_PASSWORD= password_db
+DB_NAME= name_db
 PORT= 8000
 JWT_SECRET=
 
@@ -30,13 +30,31 @@ IMAGEKIT_PRIVATE_KEY=
 IMAGEKIT_URL=
 ```
 
-4. Menjalankan projek
+4. Perintah untuk membuat database baru pada sequelize
+
+```bash
+npx sequelize db:create
+```
+
+5. Perintah untuk migrate table pada sequelize
+
+```bash
+npx sequelize db:migrate
+```
+
+6. Perintah untuk membuat seeder
+
+```bash
+npx sequelize-cli db:seed:all
+```
+
+7. Menjalankan projek
 
 ```bash
 npm run dev
 ```
 
-5. Buka browser untuk buka OpenAPI Swagger
+8. Buka browser untuk buka OpenAPI Swagger
 
 ```bash
 http://localhost:8000/api-docs
