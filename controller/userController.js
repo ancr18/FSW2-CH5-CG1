@@ -9,6 +9,18 @@ const createAdmin = async (req, res, next) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
 
+    if (!name || !email || !password || !confirmPassword) {
+      const required = [];
+      if (!name) required.push("name");
+      if (!email) required.push("email");
+      if (!password) required.push("password");
+      if (!confirmPassword) required.push("confirmPassword");
+
+      return next(
+        new ApiError(`Fields must be required : ${required.join(", ")}`, 400)
+      );
+    }
+
     // validasi untuk check apakah email nya udah ada
     const existingUser = await Auth.findOne({
       where: {
@@ -117,6 +129,18 @@ const updateUser = async (req, res, next) => {
         email,
       },
     });
+
+    if (!name || !email || !password || !confirmPassword) {
+      const required = [];
+      if (!name) required.push("name");
+      if (!email) required.push("email");
+      if (!password) required.push("password");
+      if (!confirmPassword) required.push("confirmPassword");
+
+      return next(
+        new ApiError(`Fields must be required : ${required.join(", ")}`, 400)
+      );
+    }
 
     if (existingUser) {
       return next(new ApiError("User email already taken", 400));

@@ -30,6 +30,19 @@ const createCar = async (req, res, next) => {
       img = await uploadImage(file);
     }
 
+    if (!name || !price || !category || !available) {
+      const required = [];
+      if (!name) required.push("name");
+      if (!price) required.push("price");
+      if (!category) required.push("category");
+      if (!available) required.push("available");
+      if (!file) required.push("file image");
+
+      return next(
+        new ApiError(`Fields must be required : ${required.join(", ")}`, 400)
+      );
+    }
+
     const newCar = await Car.create({
       name,
       price,
@@ -38,18 +51,17 @@ const createCar = async (req, res, next) => {
       imageUrl: img,
     });
 
-    const data = await AuditCarTrail.create({
+    const logCar = await AuditCarTrail.create({
       carId: newCar.id,
       action: "Create",
       performedBy: req.user.id,
     });
-    console.log(data);
 
     res.status(201).json({
       status: "Success",
       data: {
-        ...newCar,
-        ...data,
+        newCar,
+        logCar,
       },
     });
   } catch (err) {
@@ -109,6 +121,19 @@ const updateCar = async (req, res, next) => {
   try {
     if (file) {
       img = await uploadImage(file);
+    }
+
+    if (!name || !price || !category || !available) {
+      const required = [];
+      if (!name) required.push("name");
+      if (!price) required.push("price");
+      if (!category) required.push("category");
+      if (!available) required.push("available");
+      if (!file) required.push("file image");
+
+      return next(
+        new ApiError(`Fields must be required : ${required.join(", ")}`, 400)
+      );
     }
     const update = await Car.update(
       {

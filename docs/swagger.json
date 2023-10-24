@@ -1660,7 +1660,7 @@
         },
         "responses": {
           "201": {
-            "description": "Sukses membuat akun admin",
+            "description": "Sukses membuat car",
             "content": {
               "application/json": {
                 "schema": {
@@ -1673,35 +1673,27 @@
                     "data": {
                       "type": "object",
                       "example": {
-                        "dataValues": {
-                          "id": 21,
-                          "name": "Ansca",
-                          "role": "Admin",
-                          "updatedAt": "2023-10-23T12:38:08.677Z",
-                          "createdAt": "2023-10-23T12:38:08.677Z",
-                          "age": null,
-                          "address": null
-                        },
-                        "_previousDataValues": {
-                          "name": "Ansca",
-                          "role": "Admin",
-                          "id": 21,
-                          "age": null,
-                          "address": null,
-                          "createdAt": "2023-10-23T12:38:08.677Z",
-                          "updatedAt": "2023-10-23T12:38:08.677Z"
-                        },
-                        "uniqno": 1,
-                        "_changed": {},
-                        "_options": {
-                          "isNewRecord": true,
-                          "_schema": null,
-                          "_schemaDelimiter": ""
-                        },
-                        "isNewRecord": false,
-                        "email": "admin122@gmail.com",
-                        "password": "$2b$10$R.EK5aV4npod9wGXq0fbduGz83nc5/oLi3yjqw9lD37EPaiMlPoNW",
-                        "confirmPassword": "$2b$10$ld0iXk3nwEiYaPbZFy0OxOJ08.lVTb8ezfVd/vSAeCUjyU9.u9K0C"
+                        "data": {
+                          "newCar": {
+                            "imageUrl": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "id": 17,
+                            "name": "baru124",
+                            "price": 10000,
+                            "available": true,
+                            "category": "Small",
+                            "updatedAt": "2023-10-24T01:35:36.225Z",
+                            "createdAt": "2023-10-24T01:35:36.225Z",
+                            "deletedAt": null
+                          },
+                          "logCar": {
+                            "id": 31,
+                            "carId": 17,
+                            "action": "Create",
+                            "performedBy": 7,
+                            "updatedAt": "2023-10-24T01:35:36.250Z",
+                            "createdAt": "2023-10-24T01:35:36.250Z"
+                          }
+                        }
                       }
                     }
                   }
@@ -1762,7 +1754,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Your are not SuperAdmin. You cant access"
+                      "example": "Your are not SuperAdmin/Admin. You cant access"
                     }
                   }
                 }
@@ -1777,33 +1769,38 @@
         "tags": ["Car"],
         "security": [
           {
-            "bearerToken": []
+            "bearerToken": [],
+            "roles": ["Admin", "SuperAdmin"]
           }
         ],
-        "summary": "Return hasil hit API edit user",
-        "description": "API untuk mengedit user",
+        "summary": "Return hasil hit API edit car",
+        "description": "API untuk mengedit car",
         "requestBody": {
-          "description": "Request body untuk sukses register member",
+          "description": "Request body untuk sukses edit data car",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "name": {
                     "type": "string",
-                    "example": "Babang Tamvan"
+                    "example": "Toiota"
                   },
-                  "age": {
+                  "price": {
                     "type": "number",
-                    "example": 20
+                    "example": 202020
                   },
-                  "address": {
-                    "type": "string",
-                    "example": "Kota Palu"
+                  "available": {
+                    "type": "boolean",
+                    "example": true
                   },
-                  "email": {
+                  "category": {
                     "type": "string",
-                    "example": "abg@gmail.com"
+                    "example": "Small"
+                  },
+                  "imageUrl": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
@@ -1812,7 +1809,7 @@
         },
         "responses": {
           "201": {
-            "description": "Sukses mengedit user",
+            "description": "Sukses mengedit car",
             "content": {
               "application/json": {
                 "schema": {
@@ -1824,7 +1821,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully updated user"
+                      "example": "Successfully updated car"
                     }
                   }
                 }
@@ -1899,7 +1896,8 @@
         "tags": ["Car"],
         "security": [
           {
-            "bearerToken": []
+            "bearerToken": [],
+            "roles": ["Admin", "SuperAdmin"]
           }
         ],
         "summary": "Return hasil hit API Delete Car",
